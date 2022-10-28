@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "531935619082",
+    "project_id": "gadgetsnepal",
+    "storage_bucket": "gadgetsnepal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531935619082:android:13a36bd9a9015a111bd7f3",
+        "android_client_info": {
+          "package_name": "com.example.ecommercenepal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "531935619082-fkqarenal5f9qri9ipb67i3l60tvi09v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ecommercenepal",
+            "certificate_hash": "5b16706cb5d88c46c7e755c9c63faf10769a479a"
+          }
+        },
+        {
+          "client_id": "531935619082-p7o49ka5dg0u8qp4seso6ns8tgvb4hir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2hzH0mA7_gUyw8iyeKqrJRkOLWddDq3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "531935619082-p7o49ka5dg0u8qp4seso6ns8tgvb4hir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
