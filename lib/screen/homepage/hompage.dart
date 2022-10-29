@@ -1,6 +1,5 @@
-import 'dart:ffi';
-
 import 'package:ecommercenepal/provider/product_provider.dart';
+import 'package:ecommercenepal/screen/all%20products/view_all.dart';
 import 'package:ecommercenepal/screen/homepage/productdetail.dart';
 import 'package:ecommercenepal/screen/homepage/singal_product.dart';
 import 'package:ecommercenepal/screen/search/search.dart';
@@ -8,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
 import 'package:flutter_carousel_slider/carousel_slider_indicators.dart';
 import 'package:provider/provider.dart';
-import '../authentication/login.dart';
+import '../../authentication/login.dart';
+
 import '../review_cart/review_cart.dart';
 
 class HomePage extends StatefulWidget {
@@ -60,8 +60,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     productProvider = Provider.of(context);
 
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       key: _key,
       drawer: Drawer(
           child: ListView(
@@ -309,11 +308,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) => const ArchivesProduct(),
-                          //     ));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ViewAllProduct(),
+                              ));
                         },
                         child: const Text(
                           'See All',
@@ -359,6 +358,6 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           )),
-    ));
+    );
   }
 }

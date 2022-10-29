@@ -7,11 +7,10 @@ class ReviewCart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[350],
       bottomNavigationBar: ListTile(
         title: const Text('Total Amount'),
         subtitle: const Text('5000', style: TextStyle(color: Colors.red)),
-        trailing: Container(
+        trailing: SizedBox(
           width: 160,
           child: MaterialButton(
             color: Colors.yellow[600],
@@ -22,7 +21,13 @@ class ReviewCart extends StatelessWidget {
           ),
         ),
       ),
-      appBar: AppBar(title: const Text('Review Cart'), centerTitle: true),
+      appBar: AppBar(
+          backgroundColor: Colors.grey[200],
+          title: const Text(
+            'Review Cart',
+            style: TextStyle(color: Colors.black),
+          ),
+          centerTitle: true),
       body: ListView(
         children: [
           const SizedBox(

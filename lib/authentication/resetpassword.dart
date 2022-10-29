@@ -26,7 +26,6 @@ class _ResetPasswordState extends State<ResetPassword> {
   void validate() async {
     if (_formkey.currentState!.validate()) {
       try {
-        print(email);
         await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -44,7 +43,6 @@ class _ResetPasswordState extends State<ResetPassword> {
             ));
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
-          print('No user found for that email.');
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('No user found for that email.',
                 style: TextStyle(color: Colors.black)),

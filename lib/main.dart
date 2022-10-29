@@ -1,3 +1,4 @@
+import 'package:ecommercenepal/authentication/login.dart';
 import 'package:ecommercenepal/provider/product_provider.dart';
 import 'package:ecommercenepal/screen/homepage/hompage.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           fontFamily: 'Lato',
         ),
-        home: const MyHomePage(),
+        home: const LoginPage(),
       ),
     );
   }
