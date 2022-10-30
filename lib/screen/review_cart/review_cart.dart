@@ -29,20 +29,14 @@ class ReviewCart extends StatelessWidget {
           ),
           centerTitle: true),
       body: ListView(
-        children: [
-          const SizedBox(
+        children: const [
+          SizedBox(
             height: 10,
           ),
-          SingleItem(isbool: true),
-          SingleItem(
-            isbool: true,
-          ),
-          SingleItem(
-            isbool: true,
-          ),
-          SingleItem(
-            isbool: true,
-          ),
+          SingleItem(),
+          SingleItem(),
+          SingleItem(),
+          SingleItem(),
         ],
       ),
     );

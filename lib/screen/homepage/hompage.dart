@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommercenepal/provider/product_provider.dart';
 import 'package:ecommercenepal/provider/userdata_provider.dart';
 import 'package:ecommercenepal/screen/all%20products/view_all.dart';
 import 'package:ecommercenepal/screen/homepage/productdetail.dart';
 import 'package:ecommercenepal/screen/homepage/singal_product.dart';
 import 'package:ecommercenepal/screen/search/search.dart';
+import 'package:ecommercenepal/widgets/grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
 import 'package:flutter_carousel_slider/carousel_slider_indicators.dart';
@@ -31,24 +33,54 @@ class _HomePageState extends State<HomePage> {
   bool aboutcolor = false;
   bool logoutcolor = false;
 
-  Widget _buildproductcategory(String image, String text) {
+  Widget _buildproductcategory() {
     return Container(
+      height: size.height * 0.15,
       margin: const EdgeInsets.only(right: 16.0),
-      child: InkWell(
-        onTap: () {},
-        child: Column(
-          children: [
-            CircleAvatar(
-              maxRadius: 40,
-              child: Image(image: AssetImage(image)),
-            ),
-            Text(
-              text,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-      ),
+      child: StreamBuilder(
+          stream:
+              FirebaseFirestore.instance.collection('categories').snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 6, right: 6),
+                    child: Column(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GridViewWidget(
+                                      collection: snapshot.data!.docs[index]
+                                          ["categoryName"],
+                                      id: snapshot.data!.docs[index].id),
+                                ));
+                          },
+                          child: CircleAvatar(
+                            maxRadius: 40,
+                            child: Image(
+                                image: AssetImage(snapshot.data!.docs[index]
+                                    ['categoryimage'])),
+                          ),
+                        ),
+                        Text(
+                          snapshot.data!.docs[index]["categoryName"],
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            }
+          }),
     );
   }
 
@@ -61,9 +93,8 @@ class _HomePageState extends State<HomePage> {
           style: const TextStyle(color: Colors.black),
         ),
         currentAccountPicture: const CircleAvatar(
-          
             backgroundColor: Colors.white,
-            backgroundImage: AssetImage('assets/rijan.jpg')),
+            backgroundImage: AssetImage('assets/userimage.png')),
         decoration: const BoxDecoration(color: Color(0xfff2f2f2)),
         accountEmail:
             Text(e.userEmail, style: const TextStyle(color: Colors.black)),
@@ -89,14 +120,6 @@ class _HomePageState extends State<HomePage> {
           child: ListView(
         children: [
           _buildUserAccountsDrawerHeader(),
-          // UserAccountsDrawerHeader(
-          //   accountName: Text(userDataProvider.getUserDatalist.userName),
-          //   accountEmail: Text('Rijan_Kunwar@gmail.com'),
-          //   currentAccountPicture: CircleAvatar(
-          //     maxRadius: 45,
-          //     backgroundImage: AssetImage('assets/rijan.jpg'),
-          //   ),
-          // ),
           ListTile(
             selected: homecolor,
             leading: const Icon(
@@ -304,19 +327,7 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: size.height * 0.15,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      _buildproductcategory('assets/icon/laptop.png', 'Laptop'),
-                      _buildproductcategory('assets/icon/mobile.png', 'Mobile'),
-                      _buildproductcategory('assets/icon/watch.png', 'Watches'),
-                      _buildproductcategory(
-                          'assets/icon/listening.png', 'Earphones'),
-                    ],
-                  ),
-                ),
+                _buildproductcategory(),
                 SizedBox(
                   height: size.height * 0.1,
                   width: size.width,

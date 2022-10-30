@@ -39,6 +39,7 @@ dependencies:
   cloud_firestore:
   flutter_carousel_slider: ^1.0.9
   provider: ^6.0.4
+  image_picker: ^0.8.6
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -71,6 +72,7 @@ flutter:
     - assets/Best-HP-laptops.jpg
     - assets/fantechheadphone.jpg
     - assets/rijan.jpg
+    - assets/userimage.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

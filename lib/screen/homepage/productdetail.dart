@@ -6,6 +6,7 @@ class ProductDetail extends StatelessWidget {
   final String productimage;
   final int productprice;
   final String productdescription;
+  
 
   const ProductDetail(
       {Key? key,
@@ -131,7 +132,7 @@ class ProductDetail extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20))),
                       onPressed: () {},
-                      child: const Text('Checkout')))
+                      child: const Text('Add to Cart')))
             ],
           ),
         ),

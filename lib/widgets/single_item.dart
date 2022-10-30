@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class SingleItem extends StatefulWidget {
-  bool isbool = false;
+  
 
-  SingleItem({Key? key, required this.isbool}) : super(key: key);
+  const SingleItem({Key? key,}) : super(key: key);
 
   @override
   State<SingleItem> createState() => _SingleItemState();
@@ -58,38 +58,9 @@ class _SingleItemState extends State<SingleItem> {
             )),
             Expanded(
               child: Container(
-                padding: widget.isbool == false
-                    ? const EdgeInsets.symmetric(horizontal: 15, vertical: 32)
-                    : const EdgeInsets.only(left: 15, right: 15),
+                padding: const EdgeInsets.only(left: 15, right: 15),
                 height: 100,
-                child: widget.isbool == false
-                    ? Container(
-                        height: 25,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(30)),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.add,
-                                    size: 20,
-                                  )),
-                              const Expanded(
-                                child: Text(
-                                  'Buy',
-                                  style: TextStyle(),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    : Column(
+                child: Column(
                         children: [
                           IconButton(
                               onPressed: () {},
