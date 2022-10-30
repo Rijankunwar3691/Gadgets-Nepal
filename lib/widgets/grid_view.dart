@@ -74,41 +74,56 @@ class GridViewWidget extends StatelessWidget {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (BuildContext context, int index) {
                 var productprice = snapshot.data!.docs[index]['productprice'];
-                return Card(
-                  elevation: 8.0,
-                  child: Column(
-                    children: [
-                      Flexible(
-                        flex: 4,
-                        child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: Image(
-                                image: NetworkImage(
-                                    snapshot.data!.docs[index]['productimage']),
-                                fit: BoxFit.fitHeight)),
-                      ),
-                      Flexible(
-                        child: Text(
-                          snapshot.data!.docs[index]['productname'],
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: Colors.black),
+                return InkWell(
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductDetail(
+                            productimage: snapshot.data!.docs[index]
+                                ['productimage'],
+                            productname: snapshot.data!.docs[index]
+                                ['productname'],
+                            productprice: snapshot.data!.docs[index]
+                                ['productprice'],
+                            productdescription: snapshot.data!.docs[index]
+                                ['productdescription']),
+                      )),
+                  child: Card(
+                    elevation: 8.0,
+                    child: Column(
+                      children: [
+                        Flexible(
+                          flex: 4,
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Image(
+                                  image: NetworkImage(snapshot.data!.docs[index]
+                                      ['productimage']),
+                                  fit: BoxFit.fitHeight)),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 5.0,
-                      ),
-                      Flexible(
-                        child: Text(
-                          "Rs.$productprice".toString(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
+                        Flexible(
+                          child: Text(
+                            snapshot.data!.docs[index]['productname'],
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                color: Colors.black),
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(
+                          height: 5.0,
+                        ),
+                        Flexible(
+                          child: Text(
+                            "Rs.$productprice".toString(),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
