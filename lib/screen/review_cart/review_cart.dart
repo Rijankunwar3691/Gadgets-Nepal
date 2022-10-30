@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommercenepal/widgets/single_item.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ReviewCart extends StatelessWidget {
@@ -28,16 +30,29 @@ class ReviewCart extends StatelessWidget {
             style: TextStyle(color: Colors.black),
           ),
           centerTitle: true),
-      body: ListView(
-        children: const [
-          SizedBox(
-            height: 10,
-          ),
-          SingleItem(),
-          SingleItem(),
-          SingleItem(),
-          SingleItem(),
-        ],
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('cart')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .collection('usercart')
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (BuildContext context, int index) {
+                return SingleItem(
+                    productimage: snapshot.data!.docs[index]['productimage'],
+                    productname: snapshot.data!.docs[index]['productname'],
+                    productprice: snapshot.data!.docs[index]['productprice']);
+              },
+            );
+          }
+        },
       ),
     );
   }

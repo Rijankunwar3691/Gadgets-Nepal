@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
-class SingleItem extends StatefulWidget {
-  
+class SingleItem extends StatelessWidget {
+  SingleItem(
+      {Key? key,
+      required this.productimage,
+      required this.productname,
+      required this.productprice});
 
-  const SingleItem({Key? key,}) : super(key: key);
+  final String productname;
+  final String productimage;
+  final int productprice;
 
-  @override
-  State<SingleItem> createState() => _SingleItemState();
-}
-
-class _SingleItemState extends State<SingleItem> {
-  int quantity = 1;
+  var quantity = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +25,7 @@ class _SingleItemState extends State<SingleItem> {
                 child: SizedBox(
                     height: 100,
                     child: Center(
-                      child: Image.network(
-                          "https://static-01.daraz.com.np/p/c162eb76c19ee5d430741d95e2daaeb2.jpg"),
+                      child: Image.network(productimage),
                     ))),
             Expanded(
                 child: SizedBox(
@@ -35,18 +35,18 @@ class _SingleItemState extends State<SingleItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
-                    children: const [
+                    children: [
                       Text(
-                        'Product Name',
-                        style: TextStyle(
+                        productname,
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
-                        'Rs.20000',
-                        style: TextStyle(
+                        'Rs.$productprice',
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.red,
                             fontSize: 14),
@@ -61,39 +61,27 @@ class _SingleItemState extends State<SingleItem> {
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 height: 100,
                 child: Column(
-                        children: [
-                          IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.delete,
-                                color: Colors.black54,
-                                size: 20,
-                              )),
-                          Row(children: [
-                            Expanded(
-                              child: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      if (quantity != 0) {
-                                        quantity = quantity - 1;
-                                      }
-                                    });
-                                  },
-                                  icon: const Icon(Icons.remove)),
-                            ),
-                            Text(quantity.toString()),
-                            Expanded(
-                              child: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      quantity = quantity + 1;
-                                    });
-                                  },
-                                  icon: const Icon(Icons.add)),
-                            )
-                          ])
-                        ],
+                  children: [
+                    IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.delete,
+                          color: Colors.black54,
+                          size: 20,
+                        )),
+                    Row(children: [
+                      Expanded(
+                        child: IconButton(
+                            onPressed: () {}, icon: const Icon(Icons.remove)),
                       ),
+                      Text(quantity.toString()),
+                      Expanded(
+                        child: IconButton(
+                            onPressed: () {}, icon: const Icon(Icons.add)),
+                      )
+                    ])
+                  ],
+                ),
               ),
             ),
           ],

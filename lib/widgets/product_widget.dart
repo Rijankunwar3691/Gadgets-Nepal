@@ -7,12 +7,15 @@ class ProductWidget extends StatelessWidget {
   final String productimage;
   final int productprice;
   final String productdescription;
+  final String productid;
 
- const ProductWidget({Key? key, 
+  const ProductWidget({
+    Key? key,
     required this.productimage,
     required this.productname,
     required this.productprice,
     required this.productdescription,
+    required this.productid,
   }) : super(key: key);
 
   @override
@@ -23,6 +26,7 @@ class ProductWidget extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => ProductDetail(
+                productid: productid,
                 productdescription: productdescription,
                 productimage: productimage,
                 productname: productname,

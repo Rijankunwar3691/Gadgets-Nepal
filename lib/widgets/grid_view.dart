@@ -79,6 +79,8 @@ class GridViewWidget extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ProductDetail(
+                          productid: snapshot.data!.docs[index]
+                                      ["productid"],
                             productimage: snapshot.data!.docs[index]
                                 ['productimage'],
                             productname: snapshot.data!.docs[index]

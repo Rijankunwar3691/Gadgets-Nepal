@@ -370,6 +370,7 @@ class _HomePageState extends State<HomePage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ProductDetail(
+                                  productid: newArchivesProductData.productid,
                                   productimage:
                                       newArchivesProductData.productimage,
                                   productname:

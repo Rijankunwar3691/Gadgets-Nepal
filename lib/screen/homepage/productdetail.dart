@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommercenepal/screen/review_cart/review_cart.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetail extends StatelessWidget {
@@ -6,15 +8,16 @@ class ProductDetail extends StatelessWidget {
   final String productimage;
   final int productprice;
   final String productdescription;
-  
+  final String productid;
 
-  const ProductDetail(
-      {Key? key,
-      required this.productimage,
-      required this.productname,
-      required this.productprice,
-      required this.productdescription})
-      : super(key: key);
+  const ProductDetail({
+    Key? key,
+    required this.productimage,
+    required this.productname,
+    required this.productprice,
+    required this.productid,
+    required this.productdescription,
+  }) : super(key: key);
 
   Widget _buildColor(Color color) {
     return Flexible(
@@ -131,7 +134,29 @@ class ProductDetail extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20))),
-                      onPressed: () {},
+                      onPressed: () {
+                        FirebaseFirestore.instance
+                            .collection('cart')
+                            .doc(FirebaseAuth.instance.currentUser!.uid)
+                            .collection('usercart')
+                            .doc(productid)
+                            .set({
+                          'productid': productid,
+                          'productimage': productimage,
+                          'productname': productname,
+                          'productprice': productprice,
+                          'productquantity': 1,
+                          'productdescription': productdescription,
+                        });
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text(
+                            'Added to cart.',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          backgroundColor: Colors.cyanAccent,
+                        ));
+                      },
                       child: const Text('Add to Cart')))
             ],
           ),
