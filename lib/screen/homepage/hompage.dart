@@ -1,4 +1,5 @@
 import 'package:ecommercenepal/provider/product_provider.dart';
+import 'package:ecommercenepal/provider/userdata_provider.dart';
 import 'package:ecommercenepal/screen/all%20products/view_all.dart';
 import 'package:ecommercenepal/screen/homepage/productdetail.dart';
 import 'package:ecommercenepal/screen/homepage/singal_product.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_carousel_slider/carousel_slider_indicators.dart';
 import 'package:provider/provider.dart';
 import '../../authentication/login.dart';
 
+import '../../provider/userdata_provider.dart';
 import '../review_cart/review_cart.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,6 +23,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   late ProductProvider productProvider;
+  late UserDataProvider userDataProvider;
   late final size = MediaQuery.of(context).size;
   bool homecolor = false;
   bool cartcolor = false;
@@ -49,6 +52,25 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildUserAccountsDrawerHeader() {
+    return Column(
+        children: userDataProvider.getUserDatalist.map((e) {
+      return UserAccountsDrawerHeader(
+        accountName: Text(
+          e.userName,
+          style: const TextStyle(color: Colors.black),
+        ),
+        currentAccountPicture: const CircleAvatar(
+          
+            backgroundColor: Colors.white,
+            backgroundImage: AssetImage('assets/rijan.jpg')),
+        decoration: const BoxDecoration(color: Color(0xfff2f2f2)),
+        accountEmail:
+            Text(e.userEmail, style: const TextStyle(color: Colors.black)),
+      );
+    }).toList());
+  }
+
   @override
   void initState() {
     ProductProvider productProvider = Provider.of(context, listen: false);
@@ -58,21 +80,23 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    userDataProvider = Provider.of(context);
     productProvider = Provider.of(context);
-
+    userDataProvider.fetchUserData();
     return Scaffold(
       key: _key,
       drawer: Drawer(
           child: ListView(
         children: [
-          const UserAccountsDrawerHeader(
-            accountName: Text('Rijan Kunwar'),
-            accountEmail: Text('Rijan_Kunwar@gmail.com'),
-            currentAccountPicture: CircleAvatar(
-              maxRadius: 45,
-              backgroundImage: AssetImage('assets/rijan.jpg'),
-            ),
-          ),
+          _buildUserAccountsDrawerHeader(),
+          // UserAccountsDrawerHeader(
+          //   accountName: Text(userDataProvider.getUserDatalist.userName),
+          //   accountEmail: Text('Rijan_Kunwar@gmail.com'),
+          //   currentAccountPicture: CircleAvatar(
+          //     maxRadius: 45,
+          //     backgroundImage: AssetImage('assets/rijan.jpg'),
+          //   ),
+          // ),
           ListTile(
             selected: homecolor,
             leading: const Icon(

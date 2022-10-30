@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 
+import 'provider/userdata_provider.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -27,9 +29,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<ProductProvider>(
           create: (context) => ProductProvider(),
         ),
-        // ChangeNotifierProvider<UserProvider>(
-        //   create: (context) => UserProvider(),
-        // )
+        ChangeNotifierProvider<UserDataProvider>(
+          create: (context) => UserDataProvider(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
