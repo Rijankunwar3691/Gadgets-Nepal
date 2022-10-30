@@ -1,6 +1,8 @@
 import 'package:ecommercenepal/authentication/login.dart';
 import 'package:ecommercenepal/provider/product_provider.dart';
+
 import 'package:ecommercenepal/screen/homepage/hompage.dart';
+import 'package:ecommercenepal/screen/review_cart/review_cart.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
@@ -20,8 +22,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ProductProvider>(
-      create: (context) => ProductProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ProductProvider>(
+          create: (context) => ProductProvider(),
+        ),
+        // ChangeNotifierProvider<UserProvider>(
+        //   create: (context) => UserProvider(),
+        // )
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Gadgets Nepal',

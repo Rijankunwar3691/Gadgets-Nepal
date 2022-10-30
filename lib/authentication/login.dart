@@ -18,7 +18,6 @@ class _LoginPageState extends State<LoginPage> {
   var password = "";
   final emailcontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
-
   bool _obscuretext = true;
 
   //validate functiom to check for validation and jump on next page--------------

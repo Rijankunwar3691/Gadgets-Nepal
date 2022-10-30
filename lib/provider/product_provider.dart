@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/cupertino.dart';
 
 import '../model/product_model.dart';
@@ -6,6 +7,7 @@ import '../model/product_model.dart';
 class ProductProvider with ChangeNotifier {
   List<ProductModel> newArchivesProductList = [];
   late ProductModel productmodel;
+
   fetchNewArchivesProductData() async {
     List<ProductModel> newList = [];
 
@@ -16,8 +18,7 @@ class ProductProvider with ChangeNotifier {
           productname: element.get('productname'),
           productprice: element.get('productprice'),
           productimage: element.get('productimage'),
-          productdescription: element.get('productdescription')
-          );
+          productdescription: element.get('productdescription'));
       newList.add(productmodel);
     });
     newArchivesProductList = newList;

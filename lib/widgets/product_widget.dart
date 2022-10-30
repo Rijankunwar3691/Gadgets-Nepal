@@ -8,12 +8,12 @@ class ProductWidget extends StatelessWidget {
   final int productprice;
   final String productdescription;
 
-  const ProductWidget({
+ const ProductWidget({Key? key, 
     required this.productimage,
     required this.productname,
     required this.productprice,
     required this.productdescription,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

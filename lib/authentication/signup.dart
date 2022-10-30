@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -27,8 +28,13 @@ class _SignUpState extends State<SignUp> {
     if (formkey.currentState!.validate()) {
       try {
         // ignore: unused_local_variable
-        await FirebaseAuth.instance
+        UserCredential result = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
+        FirebaseFirestore.instance.collection('UserData').add({
+          'UserName': username,
+          'UserId': result.user!.uid,
+          'UserEmail': email
+        });
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Registered Succesfully.Please Login',
@@ -106,10 +112,13 @@ class _SignUpState extends State<SignUp> {
                           ),
                           //user name input============================
                           TextFormField(
+                            onChanged: (value) => username = value,
                             controller: usernamecontroller,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Enter Username';
+                              } else if (value.length < 6) {
+                                return 'User name is too short';
                               }
                               return null;
                             },

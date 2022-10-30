@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class SingleItem extends StatefulWidget {
   bool isbool = false;
 
-  SingleItem({required this.isbool});
+  SingleItem({Key? key, required this.isbool}) : super(key: key);
 
   @override
   State<SingleItem> createState() => _SingleItemState();
@@ -21,14 +21,14 @@ class _SingleItemState extends State<SingleItem> {
         child: Row(
           children: [
             Expanded(
-                child: Container(
+                child: SizedBox(
                     height: 100,
                     child: Center(
                       child: Image.network(
                           "https://static-01.daraz.com.np/p/c162eb76c19ee5d430741d95e2daaeb2.jpg"),
                     ))),
             Expanded(
-                child: Container(
+                child: SizedBox(
               height: 100,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
