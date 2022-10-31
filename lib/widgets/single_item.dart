@@ -1,17 +1,47 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class SingleItem extends StatelessWidget {
+// ignore: must_be_immutable
+class SingleItem extends StatefulWidget {
   SingleItem(
       {Key? key,
+      required this.productquantity,
       required this.productimage,
       required this.productname,
-      required this.productprice});
+      required this.productprice,
+      required this.productid})
+      : super(key: key);
 
   final String productname;
+  final String productid;
+
   final String productimage;
   final int productprice;
+  int productquantity;
+  @override
+  State<SingleItem> createState() => _SingleItemState();
+}
 
-  var quantity = 1;
+class _SingleItemState extends State<SingleItem> {
+  int quantity = 1;
+  void quantityFunction() {
+    FirebaseFirestore.instance
+        .collection('cart')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('usercart')
+        .doc(widget.productid)
+        .update({"productquantity": quantity});
+  }
+
+  void deleteProductFunction() {
+    FirebaseFirestore.instance
+        .collection('cart')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('usercart')
+        .doc(widget.productid)
+        .delete();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +55,7 @@ class SingleItem extends StatelessWidget {
                 child: SizedBox(
                     height: 100,
                     child: Center(
-                      child: Image.network(productimage),
+                      child: Image.network(widget.productimage),
                     ))),
             Expanded(
                 child: SizedBox(
@@ -37,7 +67,7 @@ class SingleItem extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        productname,
+                        widget.productname,
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15),
                       ),
@@ -45,7 +75,7 @@ class SingleItem extends StatelessWidget {
                         height: 10,
                       ),
                       Text(
-                        'Rs.$productprice',
+                        'Rs.${widget.productprice * widget.productquantity}',
                         style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.red,
@@ -63,22 +93,34 @@ class SingleItem extends StatelessWidget {
                 child: Column(
                   children: [
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          deleteProductFunction();
+                        },
                         icon: const Icon(
                           Icons.delete,
                           color: Colors.black54,
                           size: 20,
                         )),
                     Row(children: [
-                      Expanded(
-                        child: IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.remove)),
-                      ),
-                      Text(quantity.toString()),
-                      Expanded(
-                        child: IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.add)),
-                      )
+                      IncrementDecrement(
+                          icon: Icons.add,
+                          ontap: () {
+                            setState(() {
+                              quantity++;
+                              quantityFunction();
+                            });
+                          }),
+                      Text(widget.productquantity.toString()),
+                      IncrementDecrement(
+                          icon: Icons.remove,
+                          ontap: () {
+                            if (quantity > 1) {
+                              setState(() {
+                                quantity--;
+                                quantityFunction();
+                              });
+                            }
+                          })
                     ])
                   ],
                 ),
@@ -88,5 +130,20 @@ class SingleItem extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class IncrementDecrement extends StatelessWidget {
+  const IncrementDecrement({Key? key, required this.icon, required this.ontap})
+      : super(key: key);
+  final IconData icon;
+  final VoidCallback ontap;
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: MaterialButton(
+      onPressed: ontap,
+      child: Icon(icon),
+    ));
   }
 }

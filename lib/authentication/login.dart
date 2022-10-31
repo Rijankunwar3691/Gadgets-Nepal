@@ -27,10 +27,13 @@ class _LoginPageState extends State<LoginPage> {
         // ignore: unused_local_variable
         UserCredential userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
-        
+
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Logged in'),
+          content: Text(
+            'Logged in',
+            style: TextStyle(color: Colors.black),
+          ),
           backgroundColor: Colors.cyanAccent,
         ));
         // ignore: use_build_context_synchronously

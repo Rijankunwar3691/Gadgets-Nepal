@@ -33,6 +33,7 @@ class ProductDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         actions: [
           IconButton(
               onPressed: () {
@@ -104,60 +105,36 @@ class ProductDetail extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              const Text(
-                'Colors :',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                width: MediaQuery.of(context).size.width * 0.65,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildColor(Colors.black),
-                    _buildColor(Colors.blue),
-                    _buildColor(Colors.cyan),
-                    _buildColor(Colors.grey)
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                  height: 60,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20))),
-                      onPressed: () {
-                        FirebaseFirestore.instance
-                            .collection('cart')
-                            .doc(FirebaseAuth.instance.currentUser!.uid)
-                            .collection('usercart')
-                            .doc(productid)
-                            .set({
-                          'productid': productid,
-                          'productimage': productimage,
-                          'productname': productname,
-                          'productprice': productprice,
-                          'productquantity': 1,
-                          'productdescription': productdescription,
-                        });
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text(
-                            'Added to cart.',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          backgroundColor: Colors.cyanAccent,
-                        ));
-                      },
-                      child: const Text('Add to Cart')))
+              Center(
+                child: SizedBox(
+                    width: 250,
+                    child: MaterialButton(
+                        color: Colors.yellow,
+                        onPressed: () {
+                          FirebaseFirestore.instance
+                              .collection('cart')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .collection('usercart')
+                              .doc(productid)
+                              .set({
+                            'productid': productid,
+                            'productimage': productimage,
+                            'productname': productname,
+                            'productprice': productprice,
+                            'productquantity': 1,
+                            'productdescription': productdescription,
+                          });
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text(
+                              'Added to cart.',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            backgroundColor: Colors.cyanAccent,
+                          ));
+                        },
+                        child: const Text('Add to Cart'))),
+              )
             ],
           ),
         ),

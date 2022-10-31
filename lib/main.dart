@@ -1,4 +1,5 @@
 import 'package:ecommercenepal/authentication/login.dart';
+import 'package:ecommercenepal/provider/cart_provider.dart';
 import 'package:ecommercenepal/provider/product_provider.dart';
 
 import 'package:ecommercenepal/screen/homepage/hompage.dart';
@@ -31,6 +32,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<UserDataProvider>(
           create: (context) => UserDataProvider(),
+        ),
+        ChangeNotifierProvider<CartProvider>(
+          create: (context) => CartProvider(),
         )
       ],
       child: MaterialApp(
