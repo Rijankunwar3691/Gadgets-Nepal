@@ -3,15 +3,17 @@ import 'package:ecommercenepal/screen/review_cart/review_cart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ProductDetail extends StatelessWidget {
+class ProductDetail extends StatefulWidget {
   final String productname;
   final String productimage;
   final int productprice;
   final String productdescription;
   final String productid;
+  var availablequantity;
 
-  const ProductDetail({
+  ProductDetail({
     Key? key,
+    required this.availablequantity,
     required this.productimage,
     required this.productname,
     required this.productprice,
@@ -19,6 +21,11 @@ class ProductDetail extends StatelessWidget {
     required this.productdescription,
   }) : super(key: key);
 
+  @override
+  State<ProductDetail> createState() => _ProductDetailState();
+}
+
+class _ProductDetailState extends State<ProductDetail> {
   Widget _buildColor(Color color) {
     return Flexible(
       child: Container(
@@ -63,14 +70,14 @@ class ProductDetail extends StatelessWidget {
                     child: SizedBox(
                         height: MediaQuery.of(context).size.height * 0.4,
                         child: Image(
-                          image: NetworkImage(productimage),
+                          image: NetworkImage(widget.productimage),
                           fit: BoxFit.cover,
                         )),
                   ),
                 ),
               ),
               Text(
-                productname,
+                widget.productname,
                 style:
                     const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
@@ -78,7 +85,7 @@ class ProductDetail extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                'Rs.$productprice',
+                'Rs.${widget.productprice}',
                 style: const TextStyle(color: Colors.red, fontSize: 18),
               ),
               const SizedBox(
@@ -96,7 +103,7 @@ class ProductDetail extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: Wrap(children: [
                     Text(
-                      productdescription,
+                      widget.productdescription,
                       style: const TextStyle(fontSize: 18.0),
                     ),
                   ]),
@@ -115,14 +122,15 @@ class ProductDetail extends StatelessWidget {
                               .collection('cart')
                               .doc(FirebaseAuth.instance.currentUser!.uid)
                               .collection('usercart')
-                              .doc(productid)
+                              .doc(widget.productid)
                               .set({
-                            'productid': productid,
-                            'productimage': productimage,
-                            'productname': productname,
-                            'productprice': productprice,
+                            'productid': widget.productid,
+                            'productimage': widget.productimage,
+                            'productname': widget.productname,
+                            'productprice': widget.productprice,
                             'productquantity': 1,
-                            'productdescription': productdescription,
+                            'productdescription': widget.productdescription,
+                            'availablequantity': widget.availablequantity,
                           });
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(

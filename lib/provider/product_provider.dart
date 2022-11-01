@@ -13,6 +13,7 @@ class ProductProvider with ChangeNotifier {
         await FirebaseFirestore.instance.collection("NewArchives").get();
     value.docs.forEach((element) {
       productmodel = ProductModel(
+        availablequantity: element.get('availablequantity'),
           productname: element.get('productname'),
           productprice: element.get('productprice'),
           productimage: element.get('productimage'),

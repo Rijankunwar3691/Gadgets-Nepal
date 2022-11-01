@@ -67,6 +67,8 @@ class ViewAllProduct extends StatelessWidget {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (BuildContext context, int index) {
                 return ProductWidget(
+                  availablequantity: snapshot.data!.docs[index]
+                      ["availablequantity"],
                   productid: snapshot.data!.docs[index]["productid"],
                   productimage: snapshot.data!.docs[index]["productimage"],
                   productname: snapshot.data!.docs[index]["productname"],

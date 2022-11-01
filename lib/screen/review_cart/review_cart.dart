@@ -67,6 +67,7 @@ class _ReviewCartState extends State<ReviewCart> {
                 var data = cartProvider.cartList[index];
                 return SingleItem(
                   isbool: false,
+                  availablequantity: data.availablequantity,
                   productid: data.productid,
                   productimage: data.productimage,
                   productprice: data.productprice,

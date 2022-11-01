@@ -8,9 +8,10 @@ class ProductWidget extends StatelessWidget {
   final int productprice;
   final String productdescription;
   final String productid;
-
+  final int availablequantity;
   const ProductWidget({
     Key? key,
+    required this.availablequantity,
     required this.productimage,
     required this.productname,
     required this.productprice,
@@ -26,6 +27,7 @@ class ProductWidget extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => ProductDetail(
+                availablequantity: availablequantity,
                 productid: productid,
                 productdescription: productdescription,
                 productimage: productimage,
