@@ -44,6 +44,8 @@ dependencies:
   location:
   google_maps_flutter:
   geolocator:
+  pay: ^1.0.11
+  esewa_pnp: ^2.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -78,6 +80,8 @@ flutter:
     - assets/rijan.jpg
     - assets/userimage.png
     - assets/location.png
+    - assets/esewa/logo.png
+    - assets/esewa/logo_dark.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

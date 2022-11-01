@@ -53,17 +53,7 @@ class SingleDeliveryItem extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(number),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.delete),
-                  ),
-                ],
-              ),
+              Text(number),
             ],
           ),
         ),

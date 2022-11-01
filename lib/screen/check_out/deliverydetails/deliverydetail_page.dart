@@ -15,13 +15,6 @@ class DeliveryDetailPage extends StatefulWidget {
 }
 
 class _DeliveryDetailPageState extends State<DeliveryDetailPage> {
-  List<Widget> address = [
-    const SingleDeliveryItem(
-        title: 'rijan kunwar',
-        addressType: 'Home',
-        address: "new naikap,kathmandu 4660",
-        number: '9840546019'),
-  ];
   DeliveryAddressModel? value;
   @override
   Widget build(BuildContext context) {
@@ -51,7 +44,7 @@ class _DeliveryDetailPageState extends State<DeliveryDetailPage> {
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: MaterialButton(
           onPressed: () {
-            address.isEmpty
+            deliveryAddressProvider.getDeliveryAddressList.isEmpty
                 ? Navigator.push(context,
                     MaterialPageRoute(builder: (ctx) => AddDeliveryAdress()))
                 : Navigator.push(context,
@@ -63,7 +56,7 @@ class _DeliveryDetailPageState extends State<DeliveryDetailPage> {
               30,
             ),
           ),
-          child: address.isEmpty
+          child: deliveryAddressProvider.getDeliveryAddressList.isEmpty
               ? const Text("Add new Address")
               : const Text("Payement Summary "),
         ),

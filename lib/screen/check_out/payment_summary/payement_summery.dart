@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../provider/cart_provider.dart';
 import '../../../widgets/single_item.dart';
+import '../../payment_method/payement_method.dart';
 
 class CheckOutPage extends StatefulWidget {
   const CheckOutPage({Key? key}) : super(key: key);
@@ -144,7 +145,9 @@ class _CheckOutPageState extends State<CheckOutPage> {
                           ? const Text("")
                           : MaterialButton(
                               color: Colors.yellow,
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (ctx)=>PayementPage(totalamount: totalPrice,)));
+                              },
                               child: const Text("Buy"),
                             ),
                     )
