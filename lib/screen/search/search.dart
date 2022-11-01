@@ -64,7 +64,10 @@ class _SearchState extends State<Search> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ProductDetail(
-                                  productid: snapshots.data!.docs[index]['productid'],
+                                  availablequantity: snapshots.data!.docs[index]
+                                      ['availablequantity'],
+                                  productid: snapshots.data!.docs[index]
+                                      ['productid'],
                                   productimage: snapshots.data!.docs[index]
                                       ["productimage"],
                                   productname: snapshots.data!.docs[index]
@@ -110,6 +113,8 @@ class _SearchState extends State<Search> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ProductDetail(
+                                  availablequantity: snapshots.data!.docs[index]
+                                      ['availablequantity'],
                                   productid: snapshots.data!.docs[index]
                                       ["productid"],
                                   productimage: snapshots.data!.docs[index]

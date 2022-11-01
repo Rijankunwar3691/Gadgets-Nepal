@@ -67,6 +67,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                       var data = cartProvider.cartList[index];
                       return SingleItem(
                         isbool: true,
+                        availablequantity: data.availablequantity,
                         productid: data.productid,
                         productimage: data.productimage,
                         productprice: data.productprice,

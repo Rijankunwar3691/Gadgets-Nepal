@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class SingleItem extends StatefulWidget {
   SingleItem(
       {Key? key,
+      required this.availablequantity,
       required this.isbool,
       required this.productquantity,
       required this.productimage,
@@ -16,7 +17,7 @@ class SingleItem extends StatefulWidget {
   bool isbool = false;
   final String productname;
   final String productid;
-
+  final int availablequantity;
   final String productimage;
   final int productprice;
   int productquantity;
@@ -26,6 +27,7 @@ class SingleItem extends StatefulWidget {
 
 class _SingleItemState extends State<SingleItem> {
   int quantity = 1;
+
   void quantityFunction() {
     FirebaseFirestore.instance
         .collection('cart')
@@ -108,8 +110,30 @@ class _SingleItemState extends State<SingleItem> {
                                   icon: Icons.add,
                                   ontap: () {
                                     setState(() {
-                                      quantity++;
-                                      quantityFunction();
+                                      int productquantity =
+                                          widget.availablequantity;
+                                      if (productquantity > 1) {
+                                        quantity++;
+                                        quantityFunction();
+                                        productquantity--;
+                                        FirebaseFirestore.instance
+                                            .collection('cart')
+                                            .doc(FirebaseAuth
+                                                .instance.currentUser!.uid)
+                                            .collection('usercart')
+                                            .doc(widget.productid)
+                                            .update({
+                                          "availablequantity": productquantity
+                                        });
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          content: Text('Out Of Stock.',
+                                              style: TextStyle(
+                                                  color: Colors.black)),
+                                          backgroundColor: Colors.cyanAccent,
+                                        ));
+                                      }
                                     });
                                   }),
                               Text(widget.productquantity.toString()),
@@ -120,6 +144,22 @@ class _SingleItemState extends State<SingleItem> {
                                       setState(() {
                                         quantity--;
                                         quantityFunction();
+                                        int productquantity =
+                                            widget.availablequantity;
+                                        if (widget.productquantity != 1) {
+                                          productquantity++;
+                                          FirebaseFirestore.instance
+                                              .collection('cart')
+                                              .doc(FirebaseAuth
+                                                  .instance.currentUser!.uid)
+                                              .collection('usercart')
+                                              .doc(widget.productid)
+                                              .update({
+                                            "availablequantity": productquantity
+                                          });
+                                        } else {
+                                          print('product quantity is less');
+                                        }
                                       });
                                     }
                                   })
