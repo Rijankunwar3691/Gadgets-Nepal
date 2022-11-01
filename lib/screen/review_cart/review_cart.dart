@@ -1,10 +1,9 @@
 import 'package:ecommercenepal/provider/cart_provider.dart';
+import 'package:ecommercenepal/screen/check_out/deliverydetails/deliverydetail_page.dart';
 import 'package:ecommercenepal/widgets/single_item.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../check_out/chech_out_page.dart';
 
 class ReviewCart extends StatefulWidget {
   const ReviewCart({
@@ -41,7 +40,7 @@ class _ReviewCartState extends State<ReviewCart> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const CheckOutPage(),
+                          builder: (context) => DeliveryDetailPage(),
                         ));
                   },
                   child: const Text('Check Out'),
@@ -67,6 +66,7 @@ class _ReviewCartState extends State<ReviewCart> {
               itemBuilder: (ctx, index) {
                 var data = cartProvider.cartList[index];
                 return SingleItem(
+                  isbool: false,
                   productid: data.productid,
                   productimage: data.productimage,
                   productprice: data.productprice,

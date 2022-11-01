@@ -6,13 +6,14 @@ import 'package:flutter/material.dart';
 class SingleItem extends StatefulWidget {
   SingleItem(
       {Key? key,
+      required this.isbool,
       required this.productquantity,
       required this.productimage,
       required this.productname,
       required this.productprice,
       required this.productid})
       : super(key: key);
-
+  bool isbool = false;
   final String productname;
   final String productid;
 
@@ -88,43 +89,53 @@ class _SingleItemState extends State<SingleItem> {
             )),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                height: 100,
-                child: Column(
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          deleteProductFunction();
-                        },
-                        icon: const Icon(
-                          Icons.delete,
-                          color: Colors.black54,
-                          size: 20,
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  height: 100,
+                  child: widget.isbool == false
+                      ? Column(
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  deleteProductFunction();
+                                },
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.black54,
+                                  size: 20,
+                                )),
+                            Row(children: [
+                              IncrementDecrement(
+                                  icon: Icons.add,
+                                  ontap: () {
+                                    setState(() {
+                                      quantity++;
+                                      quantityFunction();
+                                    });
+                                  }),
+                              Text(widget.productquantity.toString()),
+                              IncrementDecrement(
+                                  icon: Icons.remove,
+                                  ontap: () {
+                                    if (quantity > 1) {
+                                      setState(() {
+                                        quantity--;
+                                        quantityFunction();
+                                      });
+                                    }
+                                  })
+                            ])
+                          ],
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('Quantity'),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(widget.productquantity.toString()),
+                          ],
                         )),
-                    Row(children: [
-                      IncrementDecrement(
-                          icon: Icons.add,
-                          ontap: () {
-                            setState(() {
-                              quantity++;
-                              quantityFunction();
-                            });
-                          }),
-                      Text(widget.productquantity.toString()),
-                      IncrementDecrement(
-                          icon: Icons.remove,
-                          ontap: () {
-                            if (quantity > 1) {
-                              setState(() {
-                                quantity--;
-                                quantityFunction();
-                              });
-                            }
-                          })
-                    ])
-                  ],
-                ),
-              ),
             ),
           ],
         ),

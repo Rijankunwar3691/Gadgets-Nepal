@@ -6,6 +6,7 @@ import 'package:ecommercenepal/screen/homepage/productdetail.dart';
 import 'package:ecommercenepal/screen/homepage/singal_product.dart';
 import 'package:ecommercenepal/screen/search/search.dart';
 import 'package:ecommercenepal/widgets/grid_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
 import 'package:flutter_carousel_slider/carousel_slider_indicators.dart';
@@ -217,11 +218,8 @@ class _HomePageState extends State<HomePage> {
                 aboutcolor = false;
                 logoutcolor = true;
               });
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginPage(),
-                  ));
+              FirebaseAuth.instance.signOut();
+             
             },
           ),
         ],
