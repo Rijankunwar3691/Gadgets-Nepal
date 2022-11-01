@@ -3,9 +3,11 @@ class ProductModel {
   final int productprice;
   final String productimage;
   final String productdescription;
+  final String productid;
   ProductModel(
       {required this.productname,
       required this.productprice,
       required this.productimage,
+      required this.productid,
       required this.productdescription});
 }

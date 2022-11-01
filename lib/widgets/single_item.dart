@@ -1,16 +1,48 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class SingleItem extends StatefulWidget {
+  SingleItem(
+      {Key? key,
+      required this.isbool,
+      required this.productquantity,
+      required this.productimage,
+      required this.productname,
+      required this.productprice,
+      required this.productid})
+      : super(key: key);
   bool isbool = false;
+  final String productname;
+  final String productid;
 
-  SingleItem({required this.isbool});
-
+  final String productimage;
+  final int productprice;
+  int productquantity;
   @override
   State<SingleItem> createState() => _SingleItemState();
 }
 
 class _SingleItemState extends State<SingleItem> {
   int quantity = 1;
+  void quantityFunction() {
+    FirebaseFirestore.instance
+        .collection('cart')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('usercart')
+        .doc(widget.productid)
+        .update({"productquantity": quantity});
+  }
+
+  void deleteProductFunction() {
+    FirebaseFirestore.instance
+        .collection('cart')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('usercart')
+        .doc(widget.productid)
+        .delete();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,32 +53,31 @@ class _SingleItemState extends State<SingleItem> {
         child: Row(
           children: [
             Expanded(
-                child: Container(
+                child: SizedBox(
                     height: 100,
                     child: Center(
-                      child: Image.network(
-                          "https://static-01.daraz.com.np/p/c162eb76c19ee5d430741d95e2daaeb2.jpg"),
+                      child: Image.network(widget.productimage),
                     ))),
             Expanded(
-                child: Container(
+                child: SizedBox(
               height: 100,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
-                    children: const [
+                    children: [
                       Text(
-                        'Product Name',
-                        style: TextStyle(
+                        widget.productname,
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
-                        'Rs.20000',
-                        style: TextStyle(
+                        'Rs.${widget.productprice * widget.productquantity}',
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.red,
                             fontSize: 14),
@@ -58,76 +89,72 @@ class _SingleItemState extends State<SingleItem> {
             )),
             Expanded(
               child: Container(
-                padding: widget.isbool == false
-                    ? const EdgeInsets.symmetric(horizontal: 15, vertical: 32)
-                    : const EdgeInsets.only(left: 15, right: 15),
-                height: 100,
-                child: widget.isbool == false
-                    ? Container(
-                        height: 25,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(30)),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.add,
-                                    size: 20,
-                                  )),
-                              const Expanded(
-                                child: Text(
-                                  'Buy',
-                                  style: TextStyle(),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    : Column(
-                        children: [
-                          IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.delete,
-                                color: Colors.black54,
-                                size: 20,
-                              )),
-                          Row(children: [
-                            Expanded(
-                              child: IconButton(
-                                  onPressed: () {
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  height: 100,
+                  child: widget.isbool == false
+                      ? Column(
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  deleteProductFunction();
+                                },
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.black54,
+                                  size: 20,
+                                )),
+                            Row(children: [
+                              IncrementDecrement(
+                                  icon: Icons.add,
+                                  ontap: () {
                                     setState(() {
-                                      if (quantity != 0) {
-                                        quantity = quantity - 1;
-                                      }
+                                      quantity++;
+                                      quantityFunction();
                                     });
-                                  },
-                                  icon: const Icon(Icons.remove)),
+                                  }),
+                              Text(widget.productquantity.toString()),
+                              IncrementDecrement(
+                                  icon: Icons.remove,
+                                  ontap: () {
+                                    if (quantity > 1) {
+                                      setState(() {
+                                        quantity--;
+                                        quantityFunction();
+                                      });
+                                    }
+                                  })
+                            ])
+                          ],
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('Quantity'),
+                            const SizedBox(
+                              height: 5,
                             ),
-                            Text(quantity.toString()),
-                            Expanded(
-                              child: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      quantity = quantity + 1;
-                                    });
-                                  },
-                                  icon: const Icon(Icons.add)),
-                            )
-                          ])
-                        ],
-                      ),
-              ),
+                            Text(widget.productquantity.toString()),
+                          ],
+                        )),
             ),
           ],
         ),
       ),
     );
+  }
+}
+
+class IncrementDecrement extends StatelessWidget {
+  const IncrementDecrement({Key? key, required this.icon, required this.ontap})
+      : super(key: key);
+  final IconData icon;
+  final VoidCallback ontap;
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: MaterialButton(
+      onPressed: ontap,
+      child: Icon(icon),
+    ));
   }
 }

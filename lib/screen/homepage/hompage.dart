@@ -1,14 +1,19 @@
-import 'dart:ffi';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommercenepal/provider/product_provider.dart';
+import 'package:ecommercenepal/provider/userdata_provider.dart';
+import 'package:ecommercenepal/screen/all%20products/view_all.dart';
 import 'package:ecommercenepal/screen/homepage/productdetail.dart';
 import 'package:ecommercenepal/screen/homepage/singal_product.dart';
 import 'package:ecommercenepal/screen/search/search.dart';
+import 'package:ecommercenepal/widgets/grid_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
 import 'package:flutter_carousel_slider/carousel_slider_indicators.dart';
 import 'package:provider/provider.dart';
-import '../authentication/login.dart';
+import '../../authentication/login.dart';
+
+import '../../provider/userdata_provider.dart';
 import '../review_cart/review_cart.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,6 +26,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   late ProductProvider productProvider;
+  late UserDataProvider userDataProvider;
   late final size = MediaQuery.of(context).size;
   bool homecolor = false;
   bool cartcolor = false;
@@ -28,25 +34,73 @@ class _HomePageState extends State<HomePage> {
   bool aboutcolor = false;
   bool logoutcolor = false;
 
-  Widget _buildproductcategory(String image, String text) {
+  Widget _buildproductcategory() {
     return Container(
+      height: size.height * 0.15,
       margin: const EdgeInsets.only(right: 16.0),
-      child: InkWell(
-        onTap: () {},
-        child: Column(
-          children: [
-            CircleAvatar(
-              maxRadius: 40,
-              child: Image(image: AssetImage(image)),
-            ),
-            Text(
-              text,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-      ),
+      child: StreamBuilder(
+          stream:
+              FirebaseFirestore.instance.collection('categories').snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 6, right: 6),
+                    child: Column(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GridViewWidget(
+                                      collection: snapshot.data!.docs[index]
+                                          ["categoryName"],
+                                      id: snapshot.data!.docs[index].id),
+                                ));
+                          },
+                          child: CircleAvatar(
+                            maxRadius: 40,
+                            child: Image(
+                                image: AssetImage(snapshot.data!.docs[index]
+                                    ['categoryimage'])),
+                          ),
+                        ),
+                        Text(
+                          snapshot.data!.docs[index]["categoryName"],
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            }
+          }),
     );
+  }
+
+  Widget _buildUserAccountsDrawerHeader() {
+    return Column(
+        children: userDataProvider.getUserDatalist.map((e) {
+      return UserAccountsDrawerHeader(
+        accountName: Text(
+          e.userName,
+          style: const TextStyle(color: Colors.black),
+        ),
+        currentAccountPicture: const CircleAvatar(
+            backgroundColor: Colors.white,
+            backgroundImage: AssetImage('assets/userimage.png')),
+        decoration: const BoxDecoration(color: Color(0xfff2f2f2)),
+        accountEmail:
+            Text(e.userEmail, style: const TextStyle(color: Colors.black)),
+      );
+    }).toList());
   }
 
   @override
@@ -58,22 +112,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    userDataProvider = Provider.of(context);
     productProvider = Provider.of(context);
-
-    return SafeArea(
-        child: Scaffold(
+    userDataProvider.fetchUserData();
+    return Scaffold(
       key: _key,
       drawer: Drawer(
           child: ListView(
         children: [
-          const UserAccountsDrawerHeader(
-            accountName: Text('Rijan Kunwar'),
-            accountEmail: Text('Rijan_Kunwar@gmail.com'),
-            currentAccountPicture: CircleAvatar(
-              maxRadius: 45,
-              backgroundImage: AssetImage('assets/rijan.jpg'),
-            ),
-          ),
+          _buildUserAccountsDrawerHeader(),
           ListTile(
             selected: homecolor,
             leading: const Icon(
@@ -171,11 +218,8 @@ class _HomePageState extends State<HomePage> {
                 aboutcolor = false;
                 logoutcolor = true;
               });
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginPage(),
-                  ));
+              FirebaseAuth.instance.signOut();
+             
             },
           ),
         ],
@@ -281,19 +325,7 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: size.height * 0.15,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      _buildproductcategory('assets/icon/laptop.png', 'Laptop'),
-                      _buildproductcategory('assets/icon/mobile.png', 'Mobile'),
-                      _buildproductcategory('assets/icon/watch.png', 'Watches'),
-                      _buildproductcategory(
-                          'assets/icon/listening.png', 'Earphones'),
-                    ],
-                  ),
-                ),
+                _buildproductcategory(),
                 SizedBox(
                   height: size.height * 0.1,
                   width: size.width,
@@ -309,11 +341,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) => const ArchivesProduct(),
-                          //     ));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ViewAllProduct(),
+                              ));
                         },
                         child: const Text(
                           'See All',
@@ -336,6 +368,7 @@ class _HomePageState extends State<HomePage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ProductDetail(
+                                  productid: newArchivesProductData.productid,
                                   productimage:
                                       newArchivesProductData.productimage,
                                   productname:
@@ -359,6 +392,6 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           )),
-    ));
+    );
   }
 }
