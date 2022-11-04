@@ -68,7 +68,10 @@ class _PayementPageState extends State<PayementPage> {
             },
             child: const ListTile(
               tileColor: Colors.white,
-              leading: Icon(Icons.abc),
+              leading: Image(
+                image: AssetImage('assets/esewa/esewalogo.jpg'),
+                height: 35,
+              ),
               title: Text('eSewa Mobile Wallet'),
               trailing: Text('>'),
             ),
@@ -93,7 +96,11 @@ class _PayementPageState extends State<PayementPage> {
             },
             child: const ListTile(
               tileColor: Colors.white,
-              leading: Icon(Icons.abc),
+              leading: Image(
+                  image: AssetImage(
+                    'assets/razorpay.png',
+                  ),
+                  height: 35),
               title: Text('Razor Pay'),
               trailing: Text('>'),
             ),
@@ -116,6 +123,7 @@ class _PayementPageState extends State<PayementPage> {
                   'purchasedate':
                       DateFormat('yyyy/mm/dd kk:mm:ss').format(DateTime.now()),
                   'status': 'pending',
+                  'paid': 'cash on delivery',
                 });
                 FirebaseFirestore.instance
                     .collection('cart')
@@ -137,7 +145,11 @@ class _PayementPageState extends State<PayementPage> {
             },
             child: const ListTile(
               tileColor: Colors.white,
-              leading: Icon(Icons.home),
+              leading: Image(
+                  image: AssetImage(
+                    'assets/cod.jpg',
+                  ),
+                  height: 40),
               title: Text('Cash on Delivery'),
               trailing: Text('>'),
             ),

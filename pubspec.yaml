@@ -84,6 +84,9 @@ flutter:
     - assets/location.png
     - assets/esewa/logo.png
     - assets/esewa/logo_dark.png
+    - assets/razorpay.png
+    - assets/esewa/esewalogo.jpg
+    - assets/cod.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

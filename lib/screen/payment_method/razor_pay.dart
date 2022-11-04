@@ -89,7 +89,7 @@ class _RazorPayState extends State<RazorPay> {
         backgroundColor: Colors.grey[200],
         centerTitle: true,
         title: const Text(
-          "ESewa ",
+          "Razor Pay ",
           style: TextStyle(color: Colors.black),
         ),
       ),
