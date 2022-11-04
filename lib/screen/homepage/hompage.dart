@@ -11,9 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
 import 'package:flutter_carousel_slider/carousel_slider_indicators.dart';
 import 'package:provider/provider.dart';
-import '../../authentication/login.dart';
 
 import '../../provider/userdata_provider.dart';
+import '../order_history/order_history.dart';
 import '../review_cart/review_cart.dart';
 
 class HomePage extends StatefulWidget {
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
   bool contactcolor = false;
   bool aboutcolor = false;
   bool logoutcolor = false;
-
+  bool viewordercolor = false;
   Widget _buildproductcategory() {
     return Container(
       height: size.height * 0.15,
@@ -170,6 +170,33 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           ListTile(
+            selected: homecolor,
+            leading: const Icon(
+              Icons.shopping_bag,
+              color: Colors.black,
+            ),
+            title: const Text(
+              'View Order',
+              style: TextStyle(letterSpacing: 1.0),
+            ),
+            onTap: () {
+              setState(() {
+                viewordercolor = true;
+
+                homecolor = false;
+                cartcolor = false;
+                contactcolor = false;
+                aboutcolor = false;
+                logoutcolor = false;
+              });
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OrderHistory(),
+                  ));
+            },
+          ),
+          ListTile(
             selected: contactcolor,
             onTap: () {
               setState(() {
@@ -219,7 +246,6 @@ class _HomePageState extends State<HomePage> {
                 logoutcolor = true;
               });
               FirebaseAuth.instance.signOut();
-             
             },
           ),
         ],
@@ -368,7 +394,8 @@ class _HomePageState extends State<HomePage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ProductDetail(
-                                  availablequantity: newArchivesProductData.availablequantity,
+                                  availablequantity:
+                                      newArchivesProductData.availablequantity,
                                   productid: newArchivesProductData.productid,
                                   productimage:
                                       newArchivesProductData.productimage,

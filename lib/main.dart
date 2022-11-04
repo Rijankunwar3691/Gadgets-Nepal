@@ -1,6 +1,7 @@
 import 'package:ecommercenepal/authentication/login.dart';
 import 'package:ecommercenepal/provider/cart_provider.dart';
 import 'package:ecommercenepal/provider/check_out_provider.dart';
+import 'package:ecommercenepal/provider/order_provider.dart';
 import 'package:ecommercenepal/provider/product_provider.dart';
 import 'package:ecommercenepal/screen/homepage/hompage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,7 +38,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<CheckoutProvider>(
           create: (context) => CheckoutProvider(),
-        )
+        ),
+        ChangeNotifierProvider<OrderProvider>(
+          create: (context) => OrderProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

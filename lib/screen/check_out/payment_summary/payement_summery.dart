@@ -1,12 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../provider/cart_provider.dart';
 import '../../../widgets/single_item.dart';
+import '../../homepage/hompage.dart';
 import '../../payment_method/payement_method.dart';
 
 class CheckOutPage extends StatefulWidget {
-  const CheckOutPage({Key? key}) : super(key: key);
+  const CheckOutPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<CheckOutPage> createState() => _CheckOutPageState();
@@ -27,7 +33,6 @@ class _CheckOutPageState extends State<CheckOutPage> {
     cartProvider = Provider.of<CartProvider>(context);
     cartProvider.getCartData();
     double subTotal = cartProvider.subTotal();
-
     double discount = 5;
     int shipping = 80;
 
@@ -41,6 +46,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
         totalPrice = 0.0;
       });
     }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -141,17 +147,67 @@ class _CheckOutPageState extends State<CheckOutPage> {
                       trailing: Text('Rs.$totalPrice'.toString()),
                     ),
                     SizedBox(
-                      width: 250,
-                      child: cartProvider.getCartList.isEmpty
-                          ? const Text("")
-                          : MaterialButton(
-                              color: Colors.yellow,
-                              onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (ctx)=>PayementPage(totalamount: totalPrice,)));
-                              },
-                              child: const Text("Buy"),
-                            ),
-                    )
+                        width: 250,
+                        child: cartProvider.getCartList.isEmpty
+                            ? const Text("")
+                            : MaterialButton(
+                                color: Colors.yellow,
+                                onPressed: () {
+                                  if (myType == AddressTypes.Home) {
+                                    cartProvider.getCartList.map((e) {
+                                      FirebaseFirestore.instance
+                                          .collection('orderhistory')
+                                          .doc(FirebaseAuth
+                                              .instance.currentUser!.uid)
+                                          .collection('userhistory')
+                                          .doc(e.productid)
+                                          .set({
+                                        'productid': e.productid,
+                                        'productimage': e.productimage,
+                                        'productname': e.productname,
+                                        'productprice': e.productprice,
+                                        'productquantity': e.productquantity,
+                                        'paymentmethod': 'cash on delivery',
+                                        'purchasedate':
+                                            DateFormat('yyyy/mm/dd kk:mm:ss')
+                                                .format(DateTime.now()),
+                                          'status': 'pending',
+                                      });
+                                      FirebaseFirestore.instance
+                                          .collection('cart')
+                                          .doc(FirebaseAuth
+                                              .instance.currentUser!.uid)
+                                          .collection('usercart')
+                                          .doc(e.productid)
+                                          .delete();
+                                    }).toList();
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content: Text(
+                                          'Order Confirmed.Thank you.',
+                                          style:
+                                              TextStyle(color: Colors.black)),
+                                      backgroundColor: Colors.cyanAccent,
+                                    ));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const HomePage(),
+                                        ));
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (ctx) => PayementPage(
+                                          totalamount: totalPrice,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: const Text("Buy"),
+                              ))
                   ],
                 ),
               ))

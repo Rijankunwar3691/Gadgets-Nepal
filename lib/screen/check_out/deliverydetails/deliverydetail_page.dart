@@ -8,6 +8,7 @@ import '../../../model/delivery_address_model.dart';
 import '../../../provider/check_out_provider.dart';
 
 class DeliveryDetailPage extends StatefulWidget {
+  
   DeliveryDetailPage({Key? key}) : super(key: key);
 
   @override

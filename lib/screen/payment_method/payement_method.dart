@@ -1,5 +1,8 @@
 import 'package:ecommercenepal/screen/payment_method/esewa.dart';
 import 'package:flutter/material.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+
+import 'razor_pay.dart';
 
 class PayementPage extends StatefulWidget {
   final double totalamount;
@@ -80,20 +83,17 @@ class _PayementPageState extends State<PayementPage> {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RazorPay(),
+                  ));
+            },
             child: const ListTile(
               tileColor: Colors.white,
               leading: Icon(Icons.abc),
-              title: Text('Google Pay'),
-              trailing: Text('>'),
-            ),
-          ),
-          InkWell(
-            onTap: () {},
-            child: const ListTile(
-              tileColor: Colors.white,
-              leading: Icon(Icons.money),
-              title: Text('Cash On Delivery'),
+              title: Text('Razor Pay'),
               trailing: Text('>'),
             ),
           ),
