@@ -1,7 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommercenepal/screen/payment_method/esewa.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
+import '../../provider/cart_provider.dart';
+import '../homepage/hompage.dart';
 import 'razor_pay.dart';
 
 class PayementPage extends StatefulWidget {
@@ -14,9 +20,13 @@ class PayementPage extends StatefulWidget {
 }
 
 class _PayementPageState extends State<PayementPage> {
+  late CartProvider cartProvider;
+
   @override
   Widget build(BuildContext context) {
     var totalprice = widget.totalamount;
+    cartProvider = Provider.of<CartProvider>(context);
+    cartProvider.getCartData();
 
     return Scaffold(
       bottomNavigationBar: ListTile(
@@ -74,15 +84,6 @@ class _PayementPageState extends State<PayementPage> {
             height: 10,
           ),
           InkWell(
-            onTap: () {},
-            child: const ListTile(
-              tileColor: Colors.white,
-              leading: Icon(Icons.credit_card),
-              title: Text('Credit/Debit Card'),
-              trailing: Text('>'),
-            ),
-          ),
-          InkWell(
             onTap: () {
               Navigator.push(
                   context,
@@ -94,6 +95,50 @@ class _PayementPageState extends State<PayementPage> {
               tileColor: Colors.white,
               leading: Icon(Icons.abc),
               title: Text('Razor Pay'),
+              trailing: Text('>'),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              cartProvider.getCartList.map((e) {
+                FirebaseFirestore.instance
+                    .collection('orderhistory')
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .collection('userhistory')
+                    .doc(e.productid)
+                    .set({
+                  'productid': e.productid,
+                  'productimage': e.productimage,
+                  'productname': e.productname,
+                  'productprice': e.productprice,
+                  'productquantity': e.productquantity,
+                  'paymentmethod': 'cash on delivery',
+                  'purchasedate':
+                      DateFormat('yyyy/mm/dd kk:mm:ss').format(DateTime.now()),
+                  'status': 'pending',
+                });
+                FirebaseFirestore.instance
+                    .collection('cart')
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .collection('usercart')
+                    .doc(e.productid)
+                    .delete();
+              }).toList();
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text('Order Confirmed.Thank you.',
+                    style: TextStyle(color: Colors.black)),
+                backgroundColor: Colors.cyanAccent,
+              ));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomePage(),
+                  ));
+            },
+            child: const ListTile(
+              tileColor: Colors.white,
+              leading: Icon(Icons.home),
+              title: Text('Cash on Delivery'),
               trailing: Text('>'),
             ),
           ),

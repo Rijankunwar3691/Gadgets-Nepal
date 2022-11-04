@@ -18,15 +18,8 @@ class CheckOutPage extends StatefulWidget {
   State<CheckOutPage> createState() => _CheckOutPageState();
 }
 
-enum AddressTypes {
-  Home,
-  OnlinePayment,
-}
-
 class _CheckOutPageState extends State<CheckOutPage> {
   late CartProvider cartProvider;
-
-  AddressTypes? myType = AddressTypes.Home;
 
   @override
   Widget build(BuildContext context) {
@@ -83,42 +76,6 @@ class _CheckOutPageState extends State<CheckOutPage> {
                     },
                   ),
           ),
-          Expanded(
-            flex: 0,
-            child: ExpansionTile(
-              title: const Text("Payement Options*"),
-              children: [
-                RadioListTile(
-                  value: AddressTypes.Home,
-                  groupValue: myType,
-                  title: const Text("Cash On Delivery"),
-                  onChanged: (AddressTypes? value) {
-                    setState(() {
-                      myType = value;
-                    });
-                  },
-                  secondary: const Icon(
-                    Icons.work,
-                    color: Colors.black,
-                  ),
-                ),
-                RadioListTile(
-                  value: AddressTypes.OnlinePayment,
-                  groupValue: myType,
-                  title: const Text("Online Payment"),
-                  onChanged: (AddressTypes? value) {
-                    setState(() {
-                      myType = value;
-                    });
-                  },
-                  secondary: const Icon(
-                    Icons.devices_other,
-                    color: Colors.black,
-                  ),
-                )
-              ],
-            ),
-          ),
           const Divider(
             color: Colors.black,
           ),
@@ -153,58 +110,14 @@ class _CheckOutPageState extends State<CheckOutPage> {
                             : MaterialButton(
                                 color: Colors.yellow,
                                 onPressed: () {
-                                  if (myType == AddressTypes.Home) {
-                                    cartProvider.getCartList.map((e) {
-                                      FirebaseFirestore.instance
-                                          .collection('orderhistory')
-                                          .doc(FirebaseAuth
-                                              .instance.currentUser!.uid)
-                                          .collection('userhistory')
-                                          .doc(e.productid)
-                                          .set({
-                                        'productid': e.productid,
-                                        'productimage': e.productimage,
-                                        'productname': e.productname,
-                                        'productprice': e.productprice,
-                                        'productquantity': e.productquantity,
-                                        'paymentmethod': 'cash on delivery',
-                                        'purchasedate':
-                                            DateFormat('yyyy/mm/dd kk:mm:ss')
-                                                .format(DateTime.now()),
-                                          'status': 'pending',
-                                      });
-                                      FirebaseFirestore.instance
-                                          .collection('cart')
-                                          .doc(FirebaseAuth
-                                              .instance.currentUser!.uid)
-                                          .collection('usercart')
-                                          .doc(e.productid)
-                                          .delete();
-                                    }).toList();
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(const SnackBar(
-                                      content: Text(
-                                          'Order Confirmed.Thank you.',
-                                          style:
-                                              TextStyle(color: Colors.black)),
-                                      backgroundColor: Colors.cyanAccent,
-                                    ));
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const HomePage(),
-                                        ));
-                                  } else {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (ctx) => PayementPage(
-                                          totalamount: totalPrice,
-                                        ),
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (ctx) => PayementPage(
+                                        totalamount: totalPrice,
                                       ),
-                                    );
-                                  }
+                                    ),
+                                  );
                                 },
                                 child: const Text("Buy"),
                               ))
