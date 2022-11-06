@@ -1,3 +1,4 @@
+import 'package:ecommercenepal/adminpanel/admin_panel.dart';
 import 'package:ecommercenepal/authentication/resetpassword.dart';
 import 'package:ecommercenepal/authentication/signup.dart';
 import 'package:ecommercenepal/screen/homepage/hompage.dart';
@@ -56,6 +57,15 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(color: Colors.black)),
             backgroundColor: Colors.cyanAccent,
           ));
+        }
+        if (emailcontroller.text == 'admin@gmail.com' ||
+            passwordcontroller.text == 'admin') {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    AdminPanel(), //naviagte to homepage after validation
+              ));
         }
       }
     }

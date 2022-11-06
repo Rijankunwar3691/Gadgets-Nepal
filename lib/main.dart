@@ -1,4 +1,5 @@
 import 'package:ecommercenepal/authentication/login.dart';
+import 'package:ecommercenepal/provider/adminpanel_provider.dart';
 import 'package:ecommercenepal/provider/cart_provider.dart';
 import 'package:ecommercenepal/provider/check_out_provider.dart';
 import 'package:ecommercenepal/provider/order_provider.dart';
@@ -41,6 +42,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<OrderProvider>(
           create: (context) => OrderProvider(),
+        ),
+        ChangeNotifierProvider<AddproductsProvider>(
+          create: (context) => AddproductsProvider(),
         ),
       ],
       child: MaterialApp(

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommercenepal/authentication/login.dart';
 import 'package:ecommercenepal/provider/product_provider.dart';
 import 'package:ecommercenepal/provider/userdata_provider.dart';
 import 'package:ecommercenepal/screen/all%20products/view_all.dart';
@@ -246,6 +247,11 @@ class _HomePageState extends State<HomePage> {
                 logoutcolor = true;
               });
               FirebaseAuth.instance.signOut();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginPage(),
+                  ));
             },
           ),
         ],

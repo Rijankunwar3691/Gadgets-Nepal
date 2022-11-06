@@ -27,7 +27,7 @@ class _OrderHistoryState extends State<OrderHistory> {
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('orderhistory')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .doc(FirebaseAuth.instance.currentUser?.uid)
             .collection('userhistory')
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

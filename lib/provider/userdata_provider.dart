@@ -5,7 +5,7 @@ import '../model/usermodel.dart';
 
 class UserDataProvider with ChangeNotifier {
   List<UserModel> userDataList = [];
-
+  List<UserModel> allUserData = [];
   late UserModel usermodel;
 
   Future<void> fetchUserData() async {
@@ -14,7 +14,7 @@ class UserDataProvider with ChangeNotifier {
     QuerySnapshot value =
         await FirebaseFirestore.instance.collection("UserData").get();
     value.docs.forEach((element) {
-      if (currentuser!.uid == element.get('UserId')) {
+      if (currentuser?.uid == element.get('UserId')) {
         usermodel = UserModel(
           userName: element.get('UserName'),
           userEmail: element.get('UserEmail'),
@@ -28,5 +28,24 @@ class UserDataProvider with ChangeNotifier {
 
   List<UserModel> get getUserDatalist {
     return userDataList;
+  }
+
+  Future<void> fetchallUserData() async {
+    List<UserModel> newallList = [];
+    QuerySnapshot value =
+        await FirebaseFirestore.instance.collection("UserData").get();
+    value.docs.forEach((element) {
+      usermodel = UserModel(
+        userName: element.get('UserName'),
+        userEmail: element.get('UserEmail'),
+      );
+      newallList.add(usermodel);
+    });
+    allUserData = newallList;
+    notifyListeners();
+  }
+
+  List<UserModel> get getallUserDatalist {
+    return allUserData;
   }
 }

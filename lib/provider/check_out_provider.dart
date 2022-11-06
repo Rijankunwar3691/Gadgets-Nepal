@@ -123,45 +123,5 @@ class CheckoutProvider with ChangeNotifier {
     return deliveryAdressList;
   }
 
-// ////// Order /////////
 
-//   addPlaceOderData({
-//     List<ReviewCartModel> oderItemList,
-//     var subTotal,
-//     var address,
-//     var shipping,
-//   }) async {
-//     FirebaseFirestore.instance
-//         .collection("Order")
-//         .doc(FirebaseAuth.instance.currentUser.uid)
-//         .collection("MyOrders")
-//         .doc()
-//         .set(
-//       {
-//         "subTotal": "1234",
-//         "Shipping Charge": "",
-//         "Discount": "10",
-//         "orderItems": oderItemList
-//             .map((e) => {
-//                   "orderTime": DateTime.now(),
-//                   "orderImage": e.cartImage,
-//                   "orderName": e.cartName,
-//                   "orderUnit": e.cartUnit,
-//                   "orderPrice": e.cartPrice,
-//                   "orderQuantity": e.cartQuantity
-//                 })
-//             .toList(),
-//         // "address": address
-//         //     .map((e) => {
-//         //           "orderTime": DateTime.now(),
-//         //           "orderImage": e.cartImage,
-//         //           "orderName": e.cartName,
-//         //           "orderUnit": e.cartUnit,
-//         //           "orderPrice": e.cartPrice,
-//         //           "orderQuantity": e.cartQuantity
-//         //         })
-//         //     .toList(),
-//       },
-//     );
-//   }
 }
