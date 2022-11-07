@@ -99,7 +99,7 @@ class CheckoutProvider with ChangeNotifier {
     DeliveryAddressModel deliveryAddressModel;
     DocumentSnapshot _db = await FirebaseFirestore.instance
         .collection("AddDeliverAddress")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .doc(FirebaseAuth.instance.currentUser?.uid)
         .get();
     if (_db.exists) {
       deliveryAddressModel = DeliveryAddressModel(
@@ -122,6 +122,4 @@ class CheckoutProvider with ChangeNotifier {
   List<DeliveryAddressModel> get getDeliveryAddressList {
     return deliveryAdressList;
   }
-
-
 }

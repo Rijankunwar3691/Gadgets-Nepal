@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommercenepal/screen/review_cart/review_cart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class ProductDetail extends StatefulWidget {
   final String productname;
@@ -26,14 +27,12 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
-  Widget _buildColor(Color color) {
-    return Flexible(
-      child: Container(
-        height: 60,
-        width: 60,
-        color: color,
-      ),
-    );
+  final FlutterTts flutterTts = FlutterTts();
+  final TextEditingController textEditingController = TextEditingController();
+  speak(String discription1) async {
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setPitch(1);
+    await flutterTts.speak(widget.productdescription);
   }
 
   @override
@@ -91,9 +90,19 @@ class _ProductDetailState extends State<ProductDetail> {
               const SizedBox(
                 height: 10,
               ),
-              const Text(
-                'Description :',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Description :',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        speak(widget.productdescription);
+                      },
+                      icon: const Icon(Icons.record_voice_over_rounded))
+                ],
               ),
               Card(
                 elevation: 8,

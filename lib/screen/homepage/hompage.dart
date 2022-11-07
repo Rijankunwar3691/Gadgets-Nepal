@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommercenepal/authentication/login.dart';
+import 'package:ecommercenepal/currency_converter/currency_converter.dart';
 import 'package:ecommercenepal/provider/product_provider.dart';
 import 'package:ecommercenepal/provider/userdata_provider.dart';
 import 'package:ecommercenepal/screen/all%20products/view_all.dart';
@@ -35,6 +36,7 @@ class _HomePageState extends State<HomePage> {
   bool aboutcolor = false;
   bool logoutcolor = false;
   bool viewordercolor = false;
+  bool currencycolor = false;
   Widget _buildproductcategory() {
     return Container(
       height: size.height * 0.15,
@@ -174,7 +176,7 @@ class _HomePageState extends State<HomePage> {
             selected: homecolor,
             leading: const Icon(
               Icons.shopping_bag,
-              color: Colors.black,
+              //color: Colors.black,
             ),
             title: const Text(
               'View Order',
@@ -194,6 +196,34 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => OrderHistory(),
+                  ));
+            },
+          ),
+          ListTile(
+            selected: homecolor,
+            leading: const Icon(
+              Icons.currency_exchange_outlined,
+              //color: Colors.black,
+            ),
+            title: const Text(
+              'Currency Converter',
+              style: TextStyle(letterSpacing: 1.0),
+            ),
+            onTap: () {
+              setState(() {
+                viewordercolor = false;
+                currencycolor = true;
+
+                homecolor = false;
+                cartcolor = false;
+                contactcolor = false;
+                aboutcolor = false;
+                logoutcolor = false;
+              });
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CurrecyConverter(),
                   ));
             },
           ),
@@ -301,131 +331,133 @@ class _HomePageState extends State<HomePage> {
         ],
         centerTitle: true,
       ),
-      body: Container(
-          height: size.height,
-          width: size.width,
-          margin: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: size.height * 0.25,
-                  child: CarouselSlider(
-                    enableAutoSlider: true,
-                    unlimitedMode: true,
-                    autoSliderDelay: const Duration(seconds: 5),
-                    slideIndicator: CircularSlideIndicator(
-                        indicatorBackgroundColor: Colors.white,
-                        currentIndicatorColor: Colors.blue,
-                        indicatorBorderColor: Colors.grey),
-                    children: [
-                      Image.asset(
-                        'assets/Best-HP-laptops.jpg',
-                        fit: BoxFit.contain,
-                      ),
-                      Image.asset(
-                        'assets/fantechheadphone.jpg',
-                        fit: BoxFit.contain,
-                      ),
-                      Image.asset(
-                        'assets/iphone 13.png',
-                        fit: BoxFit.contain,
-                      ),
-                    ],
+      body: SingleChildScrollView(
+        child: Container(
+            height: size.height,
+            width: size.width,
+            margin: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: size.height * 0.25,
+                    child: CarouselSlider(
+                      enableAutoSlider: true,
+                      unlimitedMode: true,
+                      autoSliderDelay: const Duration(seconds: 5),
+                      slideIndicator: CircularSlideIndicator(
+                          indicatorBackgroundColor: Colors.white,
+                          currentIndicatorColor: Colors.blue,
+                          indicatorBorderColor: Colors.grey),
+                      children: [
+                        Image.asset(
+                          'assets/Best-HP-laptops.jpg',
+                          fit: BoxFit.contain,
+                        ),
+                        Image.asset(
+                          'assets/fantechheadphone.jpg',
+                          fit: BoxFit.contain,
+                        ),
+                        Image.asset(
+                          'assets/iphone 13.png',
+                          fit: BoxFit.contain,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: size.height * 0.15,
-                  width: size.width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Flexible(
-                        child: Text(
-                          'Categories',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                  SizedBox(
+                    height: size.height * 0.15,
+                    width: size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Flexible(
+                          child: Text(
+                            'Categories',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                      Flexible(
-                        child: Text(
-                          'See All',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                      )
-                    ],
+                        Flexible(
+                          child: Text(
+                            'See All',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                _buildproductcategory(),
-                SizedBox(
-                  height: size.height * 0.1,
-                  width: size.width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Flexible(
-                        child: Text(
-                          'New Archives',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                  _buildproductcategory(),
+                  SizedBox(
+                    height: size.height * 0.1,
+                    width: size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Flexible(
+                          child: Text(
+                            'New Archives',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ViewAllProduct(),
-                              ));
-                        },
-                        child: const Text(
-                          'See All',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ViewAllProduct(),
+                                ));
+                          },
+                          child: const Text(
+                            'See All',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: size.width,
-                  height: size.height * 0.3,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: productProvider.getNewArchivesProductDatalist
-                        .map((newArchivesProductData) {
-                      return SingalProduct(
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProductDetail(
-                                  availablequantity:
-                                      newArchivesProductData.availablequantity,
-                                  productid: newArchivesProductData.productid,
-                                  productimage:
-                                      newArchivesProductData.productimage,
-                                  productname:
-                                      newArchivesProductData.productname,
-                                  productprice:
-                                      newArchivesProductData.productprice,
-                                  productdescription:
-                                      newArchivesProductData.productdescription,
-                                ),
-                              )),
-                          productimage: newArchivesProductData.productimage,
-                          productname: newArchivesProductData.productname,
-                          productprice: newArchivesProductData.productprice);
-                    }).toList(),
+                  SizedBox(
+                    width: size.width,
+                    height: size.height * 0.3,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: productProvider.getNewArchivesProductDatalist
+                          .map((newArchivesProductData) {
+                        return SingalProduct(
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProductDetail(
+                                    availablequantity: newArchivesProductData
+                                        .availablequantity,
+                                    productid: newArchivesProductData.productid,
+                                    productimage:
+                                        newArchivesProductData.productimage,
+                                    productname:
+                                        newArchivesProductData.productname,
+                                    productprice:
+                                        newArchivesProductData.productprice,
+                                    productdescription: newArchivesProductData
+                                        .productdescription,
+                                  ),
+                                )),
+                            productimage: newArchivesProductData.productimage,
+                            productname: newArchivesProductData.productname,
+                            productprice: newArchivesProductData.productprice);
+                      }).toList(),
 
-                    // children: [
+                      // children: [
 
-                    // ],
+                      // ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          )),
+                ],
+              ),
+            )),
+      ),
     );
   }
 }
