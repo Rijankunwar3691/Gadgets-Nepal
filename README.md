@@ -1,6 +1,12 @@
-# ecommercenepal
+# Gadgets NEPAL
 
-A new Flutter project.
+It is an E-Commerce android app with admin panel made using technologies such as flutter, Dart, Firebase Cloud storage.
+ - Admin has functionalities to add products, view orders.
+ - Payment integration such as esewa and razorpay is used.
+ - google maps API is used for Delivery Location.
+ - Provider state management is used in this project.
+ You can download this app by clicking this link..
+ https://drive.google.com/file/d/1oWM3Wrfx0kAtwJ5O9j5xNLwmRs8CGwA_/view?usp=sharing  
 
 ## Getting Started
 
